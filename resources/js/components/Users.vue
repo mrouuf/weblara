@@ -27,11 +27,11 @@
                     <td>{{user.type | upText}}</td>
                     <td>{{user.created_at | myDate}}</td>
                         <a href="#">
-                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-edit cyan"></i>
                         </a>
                         /
                         <a href="#">
-                        <i class="fa fa-trash"></i>
+                        <i class="fa fa-trash cyan"></i>
                         </a>
                     </td>
                   </tr>
@@ -124,7 +124,9 @@
                     axios.get("api/user").then(({ data }) => (this.users = data));
                 },
                 createUser(){
+                    this.$Progress.start();
                     this.form.post('api/user');
+                    this.$Progress.finish()
                 }
         },
         created() {
