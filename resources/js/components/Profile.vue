@@ -77,14 +77,14 @@
                                     <label for="inputName" class="col-sm-2 control-label">Name</label>
 
                                     <div class="col-sm-12">
-                                    <input type="" class="form-control" id="inputName" placeholder="Name">
+                                    <input type="name" v-model="form.name" class="form-control" id="inputName" placeholder="Name">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputEmail" class="col-sm-2 control-label">Email</label>
 
                                     <div class="col-sm-12">
-                                    <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                                    <input type="email" v-model="form.email" class="form-control" id="inputEmail" placeholder="Email">
                                     </div>
                                 </div>
 
@@ -98,7 +98,7 @@
                                 <div class="form-group">
                                     <label for="photo" class="col-sm-2 control-label">Profile Photo</label>
                                     <div class="col-sm-12">
-                                        <input type="file" name="photo" class="form-input">
+                                        <input type="file" @change="updateProfile" name="photo" class="form-input">
                                     </div>
 
                                 </div>
@@ -118,7 +118,7 @@
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-12">
-                                    <button type="submit" class="btn btn-success">Update</button>
+                                    <button @click.prevent="updateInfo" type="submit" class="btn btn-success">Update</button>
                                     </div>
                                 </div>
                                 </form>
@@ -137,8 +137,58 @@
 
 <script>
     export default {
+        data() {
+            return {
+                form: new Form({
+                 id : '',
+                 name : '',
+                 email : '',
+                 password : '',
+                 type : '',
+                 bio : '',
+                 photo: ''
+            })
+            }
+        },
+        
         mounted() {
             console.log('Component mounted.')
+        },
+
+        methods: {
+            updateInfo(){
+                this.form.put('api/profile')
+                .then(()=>{
+
+                })
+                .catch(()=>{
+
+                });
+            },
+
+            updateProfile(e){
+                //console.log('uplodaing');
+                let file = e.target.files[0];
+                let reader = new FileReader();
+                let limit = 1024 * 1024 * 2;
+                if(file['size'] > limit){
+                    swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'You are uploading a large file',
+                    })
+                    return false;
+                }
+                reader.onloadend = (file) => {
+                    this.form.photo = reader.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        },
+
+        created() {
+            axios.get("api/profile")
+            .then(({data}) => (this.form.fill(data)));
         }
     }
 </script>
