@@ -20,7 +20,7 @@
               <h5 class="widget-user-desc">Web Designer</h5>
             </div>
             <div class="widget-user-image">
-              <img class="img-circle" src="" alt="User Avatar">
+              <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
             </div>
             <div class="box-footer">
               <div class="row">
@@ -77,14 +77,16 @@
                                     <label for="inputName" class="col-sm-2 control-label">Name</label>
 
                                     <div class="col-sm-12">
-                                    <input type="name" v-model="form.name" class="form-control" id="inputName" placeholder="Name">
+                                    <input type="" v-model="form.name" class="form-control" id="inputName" placeholder="Name" :class="{ 'is-invalid': form.errors.has('name') }">
+                                     <has-error :form="form" field="name"></has-error>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputEmail" class="col-sm-2 control-label">Email</label>
 
                                     <div class="col-sm-12">
-                                    <input type="email" v-model="form.email" class="form-control" id="inputEmail" placeholder="Email">
+                                    <input type="email" v-model="form.email" class="form-control" id="inputEmail" placeholder="Email"  :class="{ 'is-invalid': form.errors.has('email') }">
+                                     <has-error :form="form" field="email"></has-error>
                                     </div>
                                 </div>
 
@@ -92,7 +94,8 @@
                                     <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
 
                                     <div class="col-sm-12">
-                                    <textarea  class="form-control" id="inputExperience" placeholder="Experience"></textarea>
+                                    <textarea  v-model="form.bio" class="form-control" id="inputExperience" placeholder="Experience" :class="{ 'is-invalid': form.errors.has('bio') }"></textarea>
+                                     <has-error :form="form" field="bio"></has-error>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -108,11 +111,13 @@
 
                                     <div class="col-sm-12">
                                     <input type="password"
-                                        
+                                        v-model="form.password"
                                         class="form-control"
                                         id="password"
-                                        placeholder="Passport"   
-                                    > 
+                                        placeholder="Passport"
+                                        :class="{ 'is-invalid': form.errors.has('password') }"
+                                    >
+                                     <has-error :form="form" field="password"></has-error>
                                     </div>
                                 </div>
 
@@ -154,8 +159,11 @@
         mounted() {
             console.log('Component mounted.')
         },
-
         methods: {
+            getProfilePhoto(){
+                let photo = (this.form.photo.length > 200) ? this.form.photo : "img/profile/"+ this.form.photo ;
+                return photo;
+            },
             updateInfo(){
                 this.$Progress.start();
                 this.form.put('api/profile')
@@ -167,7 +175,6 @@
                     this.$Progress.fail();
                 });
             },
-
             updateProfile(e){
                 //console.log('uplodaing');
                 let file = e.target.files[0];
@@ -187,7 +194,6 @@
                 reader.readAsDataURL(file);
             }
         },
-
         created() {
             axios.get("api/profile")
             .then(({data}) => (this.form.fill(data)));
