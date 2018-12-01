@@ -30749,7 +30749,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_4_vue_router__["a" /* default */]);
 Vue.use(__WEBPACK_IMPORTED_MODULE_5_vue_progressbar___default.a, {
     color: 'rgb(143, 255, 199)',
     failedColor: 'red',
-    height: '5px'
+    height: '3px'
 });
 
 var routes = [{ path: '/dashboard', component: __webpack_require__(173) }, { path: '/developer', component: __webpack_require__(176) }, { path: '/users', component: __webpack_require__(179) }, { path: '/profile', component: __webpack_require__(182) }, { path: '*', component: __webpack_require__(203) }];
@@ -30770,11 +30770,9 @@ Vue.filter('myDate', function (created) {
 window.Fire = new Vue();
 
 /**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
 Vue.component('passport-clients', __webpack_require__(188));
@@ -30786,18 +30784,6 @@ Vue.component('passport-personal-access-tokens', __webpack_require__(198));
 Vue.component('not-found', __webpack_require__(203));
 
 Vue.component('example-component', __webpack_require__(206));
-
-// const files = require.context('./', true, /\.vue$/i)
-
-// files.keys().map(key => {
-//     return Vue.component(_.last(key.split('/')).split('.')[0], files(key))
-// })
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 
 var app = new Vue({
     el: '#app',
@@ -71040,6 +71026,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -71071,15 +71071,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         updateUser: function updateUser() {
             var _this2 = this;
 
-            /*console.log('Editing data');*/
             this.$Progress.start();
+            // console.log('Editing data');
             this.form.put('api/user/' + this.form.id).then(function () {
+                // success
                 $('#addNew').modal('hide');
-                swal('Updated!', 'Your file has been updated.', 'success');
+                swal('Updated!', 'Information has been updated.', 'success');
                 _this2.$Progress.finish();
                 Fire.$emit('AfterCreate');
             }).catch(function () {
-                _this2.Progress.fail();
+                _this2.$Progress.fail();
             });
         },
         editModal: function editModal(user) {
@@ -71169,7 +71170,7 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _vm.$gate.isAdminOrAuthor()
       ? _c("div", { staticClass: "row mt-5" }, [
-          _c("div", { staticClass: "col-12" }, [
+          _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "card" }, [
               _c("div", { staticClass: "card-header" }, [
                 _c("h3", { staticClass: "card-title" }, [
@@ -71185,7 +71186,7 @@ var render = function() {
                     },
                     [
                       _vm._v("Add New "),
-                      _c("i", { staticClass: "fas fa-user-plus" })
+                      _c("i", { staticClass: "fas fa-user-plus fa-fw" })
                     ]
                   )
                 ])
@@ -71214,33 +71215,35 @@ var render = function() {
                             _vm._v(_vm._s(_vm._f("myDate")(user.created_at)))
                           ]),
                           _vm._v(" "),
-                          _c(
-                            "a",
-                            {
-                              attrs: { href: "#" },
-                              on: {
-                                click: function($event) {
-                                  _vm.editModal(user)
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.editModal(user)
+                                  }
                                 }
-                              }
-                            },
-                            [_c("i", { staticClass: "fa fa-edit cyan" })]
-                          ),
-                          _vm._v(
-                            "\n                        /\n                        "
-                          ),
-                          _c(
-                            "a",
-                            {
-                              attrs: { href: "#" },
-                              on: {
-                                click: function($event) {
-                                  _vm.deleteUser(user.id)
+                              },
+                              [_c("i", { staticClass: "fa fa-edit blue" })]
+                            ),
+                            _vm._v(
+                              "\n                    /\n                    "
+                            ),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.deleteUser(user.id)
+                                  }
                                 }
-                              }
-                            },
-                            [_c("i", { staticClass: "fa fa-trash cyan" })]
-                          )
+                              },
+                              [_c("i", { staticClass: "fa fa-trash red" })]
+                            )
+                          ])
                         ])
                       })
                     ],
@@ -71275,7 +71278,7 @@ var render = function() {
           id: "addNew",
           tabindex: "-1",
           role: "dialog",
-          "aria-labelledby": "exampleModalLabel",
+          "aria-labelledby": "addNewLabel",
           "aria-hidden": "true"
         }
       },
@@ -71296,14 +71299,14 @@ var render = function() {
                       {
                         name: "show",
                         rawName: "v-show",
-                        value: _vm.editmode,
-                        expression: "editmode"
+                        value: !_vm.editmode,
+                        expression: "!editmode"
                       }
                     ],
                     staticClass: "modal-title",
-                    attrs: { id: "exampleModalLabel" }
+                    attrs: { id: "addNewLabel" }
                   },
-                  [_vm._v("Edit User")]
+                  [_vm._v("Add New")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -71313,14 +71316,14 @@ var render = function() {
                       {
                         name: "show",
                         rawName: "v-show",
-                        value: !_vm.editmode,
-                        expression: "!editmode"
+                        value: _vm.editmode,
+                        expression: "editmode"
                       }
                     ],
                     staticClass: "modal-title",
-                    attrs: { id: "exampleModalLabel" }
+                    attrs: { id: "addNewLabel" }
                   },
-                  [_vm._v("Add New User")]
+                  [_vm._v("Update User's Info")]
                 ),
                 _vm._v(" "),
                 _vm._m(1)
@@ -71356,7 +71359,7 @@ var render = function() {
                           attrs: {
                             type: "text",
                             name: "name",
-                            placeholder: "Enter Name"
+                            placeholder: "Name"
                           },
                           domProps: { value: _vm.form.name },
                           on: {
@@ -71432,7 +71435,7 @@ var render = function() {
                           attrs: {
                             name: "bio",
                             id: "bio",
-                            placeholder: "Short bio for user (optional)"
+                            placeholder: "Short bio for user (Optional)"
                           },
                           domProps: { value: _vm.form.bio },
                           on: {
@@ -71538,8 +71541,7 @@ var render = function() {
                           attrs: {
                             type: "password",
                             name: "password",
-                            id: "password",
-                            placeholder: "Enter Password"
+                            id: "password"
                           },
                           domProps: { value: _vm.form.password },
                           on: {
@@ -71571,7 +71573,7 @@ var render = function() {
                         staticClass: "btn btn-danger",
                         attrs: { type: "button", "data-dismiss": "modal" }
                       },
-                      [_vm._v("Cancel")]
+                      [_vm._v("Close")]
                     ),
                     _vm._v(" "),
                     _c(
@@ -71588,7 +71590,7 @@ var render = function() {
                         staticClass: "btn btn-success",
                         attrs: { type: "submit" }
                       },
-                      [_vm._v("Edit")]
+                      [_vm._v("Update")]
                     ),
                     _vm._v(" "),
                     _c(
@@ -71630,6 +71632,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Email")]),
       _vm._v(" "),
       _c("th", [_vm._v("Type")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Registered At")]),
       _vm._v(" "),
       _c("th", [_vm._v("Modify")])
     ])
